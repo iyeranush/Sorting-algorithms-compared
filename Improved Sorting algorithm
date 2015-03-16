@@ -1,0 +1,152 @@
+import java.util.Scanner;
+import java.util.Random;
+
+
+public class Improvedsorting {
+
+	static Scanner input_list = new Scanner(System.in);
+	static Random arrayGenerator= new Random();
+	static int n=input_list.nextInt();
+	static int[] sorting_list = new int[n];
+	static int[] temporary = new int[n];
+
+	
+	public static void getSortinglist()
+	{
+		
+		int i=0;		
+		for(i=0;i<n;i++)
+		{
+			sorting_list[i]= arrayGenerator.nextInt(n);
+			temporary[i]=sorting_list[i];
+		}
+	}
+	
+	public static void getFresharray()
+	{
+		for(int i=0;i<n;i++)
+		{
+			sorting_list[i]=temporary[i];
+		}
+		
+	}
+	
+	public static void improvedSort()
+	{
+		if(n<64)
+			insertionSort();
+		else
+			quickSort(0,n-1);
+	}
+	
+	public static void insertionSort()
+	{
+		int i=1;
+		while (i<n)
+		{
+			int j=0;
+			while(j<i && sorting_list[j]<sorting_list[i])
+				j=j+1;
+			int key= sorting_list[i];
+			int x=i;
+			while (x>j)
+			{
+				sorting_list[x]=sorting_list[x-1];
+				x=x-1;
+			}
+			sorting_list[j]=key;
+			i++;
+		}
+		
+		
+	}
+
+	public static void quickSort(int b, int c)
+	{
+		int i=b,j=c;
+		
+		int pivot=sorting_list[i+(j-i)/2];
+		while(i<=j)
+		{
+			while(sorting_list[i]<pivot)
+			i++;
+			while(sorting_list[j]>pivot)
+			j--;
+			if(i<=j )
+			{
+				swap(i,j);
+				i++;
+				j--;
+			}
+			
+		}
+		if(b<j)
+		quickSort(b,j);
+		if(i<c)
+		quickSort(i,c);		
+		
+		
+	}
+
+	public static void swap(int m, int n)
+	{
+		int temp;
+		temp=sorting_list[m];
+		sorting_list[m]=sorting_list[n];
+		sorting_list[n]=temp;	
+	}
+	public static void display()
+	{
+		for(int i=0;i<n;i++)
+		{
+			System.out.println(sorting_list[i]);
+		}
+	}
+	
+public static void main(String args[]){
+	long startTime, endTime, totalTime;
+	System.out.println("Enter Length of the Array:");
+
+	Improvedsorting numbers= new Improvedsorting();
+	numbers.getSortinglist();
+	
+	numbers.display();
+	
+	startTime=System.nanoTime();
+	numbers.insertionSort();
+	endTime=System.nanoTime();
+	totalTime=endTime-startTime;
+	System.out.println("Total time taken for insertion sort :"+ totalTime);
+	
+	numbers.getFresharray();
+	startTime=System.nanoTime();
+	numbers.quickSort(0,n-1);
+	endTime=System.nanoTime();
+	totalTime=endTime-startTime;
+	System.out.println("Total time taken for quick sort :"+ totalTime);
+	
+	numbers.getFresharray();
+	//numbers.display();
+	if(n<64)
+	{
+	startTime=System.nanoTime();
+	numbers.insertionSort();
+	endTime=System.nanoTime();
+	totalTime=endTime-startTime;
+	System.out.println("Total time taken for Improved sort :"+ totalTime);
+	
+	}
+	else
+	{
+		startTime=System.nanoTime();
+		numbers.quickSort(0,n-1);
+		endTime=System.nanoTime();
+		totalTime=endTime-startTime;
+		System.out.println("Total time taken for Improved sort :"+ totalTime);	
+	}
+	
+	numbers.display();
+	
+}
+
+}
